@@ -39,6 +39,20 @@ function Article(props){
     </article>
   )
 }
+function Create() {
+  return (
+    <article>
+      <h2>Create</h2>
+      <form onSubmit={event=>{ // onSubmit은 submit 버튼을 클릭했을 때 form 태그에서 발생하는 이벤트
+
+      }}>
+        <p><input type="text" name="title" placeholder="title" /></p>
+        <p><textarea name="body" placeholder="body"></textarea></p>
+        <p><input type="submit" value="Create"></input></p>
+      </form>
+    </article>
+  )
+}
 function App() {
   const [mode, setMode] = useState('WELCOME');
   const [id, setId] = useState(null);
@@ -61,6 +75,10 @@ function App() {
       }
       content = <Article title={title} body={body}></Article>
     }
+  } else if(mode === 'CREATE'){
+    content = <Create onCreate={(title, body)=>{
+
+    }}></Create>
   }
 
   return (
@@ -73,6 +91,10 @@ function App() {
         setId(_id);
       }}></Nav>
       {content}
+      <a href='/create' onClick={event=>{
+        event.preventDefault();
+        setMode('CREATE');
+      }}>Create</a>
     </div>
   );
 }
