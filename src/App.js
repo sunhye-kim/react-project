@@ -39,13 +39,16 @@ function Article(props){
     </article>
   )
 }
-function Create() {
+function Create(props) {
   return (
     <article>
       <h2>Create</h2>
-      <form onSubmit={event=>{ // onSubmit은 submit 버튼을 클릭했을 때 form 태그에서 발생하는 이벤트
-
-      }}>
+      <form onSubmit={event=>{ // form 태그 : submit 했을 때 페이지 리로드. onSubmit: submit 버튼을 클릭했을 때 form 태그에서 발생하는 이벤트.
+        event.preventDefault(); // 리로드 막기
+        const title = event.target.title.value;
+        const body = event.target.body.value;
+        props.onCreate(title, body);
+      }} >
         <p><input type="text" name="title" placeholder="title" /></p>
         <p><textarea name="body" placeholder="body"></textarea></p>
         <p><input type="submit" value="Create"></input></p>
@@ -56,12 +59,12 @@ function Create() {
 function App() {
   const [mode, setMode] = useState('WELCOME');
   const [id, setId] = useState(null);
-  
-  const topics = [
+  const [nextId, setNextId] = useState(4);
+  const [topics, setTopics] = useState([
     {id:1, title:'html', body:'html is ...'},
     {id:2, title:'css', body:'css is ...'},
     {id:3, title:'javascript', body:'javascript is ...'},
-  ]
+  ]);
   let content = null;
   if (mode === 'WELCOME') {
     content = <Article title="Welcome" body="Hello, Web"></Article>
@@ -76,8 +79,11 @@ function App() {
       content = <Article title={title} body={body}></Article>
     }
   } else if(mode === 'CREATE'){
-    content = <Create onCreate={(title, body)=>{
-
+    content = <Create onCreate={(_title, _body)=>{
+      const newTopic = {id:nextId, title:_title, body:_body}
+      const newTopics = [...topics]
+      newTopics.push(newTopic);
+      setTopics(newTopics);
     }}></Create>
   }
 
