@@ -148,6 +148,7 @@ function App() {
         }
       }
       setTopics(newTopics);
+      setMode('READ')
     }}></Update>
   }
 
