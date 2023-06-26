@@ -70,7 +70,7 @@ function Update(props){
       }} >
         <p><input type="text" name="title" placeholder="title" value={title} onChange={event=>{
           setTitle(event.target.value);
-        }} /></p>
+        }}/></p>
         <p><textarea name="body" placeholder="body" value={body} onChange={event=>{
           setBody(event.target.value);
         }}></textarea></p>
@@ -101,10 +101,22 @@ function App() {
         body = topics[i].body;
       }
       content = <Article title={title} body={body}></Article>
-      contextControl = <li><a href={'/update'+id} onClick={event=>{
-        event.preventDefault();
-        setMode('UPDATE');
-      }}>Update</a></li>
+      contextControl = <>
+        <li><a href={'/update/'+id} onClick={event=>{
+          event.preventDefault();
+          setMode('UPDATE');
+        }}>Update</a></li>
+        <li><input type="button" value="Delete" onClick={()=>{
+          const newTopics = []
+          for(let i=0; i<topics.length; i++){
+            if(topics[i].id !== id){
+              newTopics.push(topics[i]);
+            }
+          }
+          setTopics(newTopics);
+          setMode('WELCOME');
+        }}/></li>
+      </>
     }
   } else if(mode === 'CREATE'){
     content = <Create onCreate={(_title, _body)=>{
